@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="1.6" method="upgrade">
+  <name>Content Statistics (EVOLUTION IN TIME)</name>
+  <author>JoomlaThat!</author>
+  <creationDate>April 2014</creationDate>
+  <copyright>Copyright (C) 2011 - 2014 JoomlaThat. All rights reserved.</copyright>
+  <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+  <authorEmail>support@joomlathat.com</authorEmail>
+  <authorUrl>www.joomlathat.com</authorUrl>
+  <version>1.6.1</version>
+  <description>This module displays statistics (evolution in time) of any content which has a plugin installed compatible with Content Statistics</description>
+  <files>
+    <filename module="mod_content_statistics_individual">mod_content_statistics_individual.php</filename>
+    <filename>index.html</filename>
+    <filename>helper.php</filename>
+    <filename>tmpl/index.html</filename>
+    <filename>tmpl/default.php</filename>
+    <filename>tmpl/new.php</filename>
+    <filename>tmpl/statistics.css</filename>
+    <filename>tmpl/spinner.gif</filename>
+  </files>
+  <config>
+    <fields name="params" addfieldpath="/plugins/system/contentstats/contentstats">
+      <fieldset
+						name="basic"      
+						label="General"
+						description="General settings"
+						>
+        <field name="component" type="sql" default="0" label="Content provider" query="SELECT '' AS value, '- Select a content provider (component) -' AS text FROM #__extensions UNION SELECT pl.element AS value, CONCAT(co.name, ' (', pl.element, ')') AS text FROM #__extensions AS pl LEFT JOIN #__extensions AS co ON co.element = pl.element AND co.type = 'component' WHERE pl.folder = 'contentstats' AND pl.type = 'plugin' " key_field="value" value_field="text" class="not_chosen" />
+        <!--field name="component" type="contenttypeselect" default="0" label="Content provider" /-->
+        
+        <field name="criteria" type="list" default="0" label="Content criteria" description="The criteria to follow to select the data" class="not_chosen">
+          <option value="0">Please select a content provider first</option>
+        </field>
+        <field name="selector" type="list" default="all" label="Selector" description="Specify which results to consider" class="not_chosen">
+          <option value="0">Please select a content provider first</option>
+        </field>
+        <field name="specific_id" type="text" class="input-mini" default="" size="5" label="Specific ID filter" description="Mandatory to fill if you choosed SPECIFIC option on the list above. Leave empty if you are using option ALL or CURRENT" />
+        <field name="filter_user" type="radio" default="0" label="Filter by viewing user" description="Show statistics only for the user logged-in" class="btn-group">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+        <field name="extra_filters" type="text" label="Extra filters" description="Extra filters. Leave EMPTY unless you know what you're doing" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="unique" type="list" default="0" label="Unique visitors" description="To count only unique visitors">
+          <option value="0">No</option>
+          <option value="1">Yes, by IP</option>
+		  <option value="2">Yes, by user ID (only registered users)</option>
+        </field>
+        <field name="@spacer" type="spacer" default="" label="" description="" />
+        <field name="time" type="radio" default="DAYS" label="Period of time" description="Period of time to show in the graphic" class="btn-group">
+          <option value="DAYS">Last X days</option>
+          <option value="MONTHS">Last X months</option>
+		  <option value="YEARS">Last X years</option>
+        </field>
+        <field name="num_units_time" class="input-mini" type="text" default="7" size="3" label="Num days or months" description="The number of DAYS or MONTHS to show in retrospective" />
+        <field name="num_labels" type="text" class="input-mini" default="1" size="3" label="Show X axis labels each X data point" description="For instance, if you show 14 days and you put this fieldeter to 2, you'll see 7 labels" />
+        <field name="label_format" type="list" default="%a" label="Label date format" description="This is the strftime format for the date labels" >
+          <option value="D">Sun</option>
+          <option value="l">Sunday</option>
+          <option value="j">17</option>
+          <option value="D j">Sun 17</option>
+          <option value="l j">Sunday 17</option>
+          <option value="D j M">Sun 17 Jan</option>
+          <option value="D, M j">Sun, Jan 17</option>
+          <option value="M j">Jan 17</option>
+          <option value="M">Jan</option>
+          <option value="F">January</option>
+          <option value="M Y">Jan 2014</option>
+          <option value="F Y">January 2014</option>
+		  <option value="Y">2014</option>
+        </field>
+        <field name="other_label_format" type="text" default="" label="Label date format (custom)" description="Leave empty to use one of the options above" />
+        <field name="layout" type="radio" default="new" label="Layout" description="Layout" class="btn-group">
+		  <option value="new">New Google charts (SVG, HTML5)</option>
+          <option value="default">Google Charts</option>
+        </field>
+        <field name="dataname" type="text" size="20" default="Data" label="Data name" description="Data name" />
+        <field name="responsive" type="radio" default="0" label="Responsive layout" description="Responsive layout" class="btn-group">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+        <field name="width" type="text" class="input-mini" default="215" size="4" label="Chart width" description="The IMG element width" />
+        <field name="height" type="text" class="input-mini" default="170" size="4" label="Chart height" description="The IMG element height" />
+        <field name="chart" type="list" default="lc" label="Chart type" description="The chart type">
+          <option value="lc">Line Chart</option>
+		  <option value="smooth">Line Chart (smooth)</option>
+		  <option value="bvg">Column Chart</option>
+		  <option value="area">Area Chart</option>
+		  <option value="stepped">Stepped Area Chart</option>
+		  <option value="steppedunconnected">Stepped Area Chart (unconnected steps)</option>
+        </field>
+        <field name="@spacer" type="spacer" default="" label="" description="" />
+        <field name="linecolor" type="color" class="input-mini" size="6" default="#335973" label="Line color" description="Line color" />
+        
+        <field name="backgroundcolor" type="color" class="input-mini" size="6" default="" label="Background color" description="Background color" />
+        <field name="chartareacolor" type="color" class="input-mini" size="6" default="" label="Chart area color" description="Chart area color" />
+        <field name="labelcolor" type="color" class="input-mini" size="6" default="#999999" label="Label color" description="Label color" />
+		    
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="linewidth" type="text" class="input-mini" default="2" size="3" label="Line width" description="Line width ONLY for LINE CHART" />
+		
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+        <field name="Itemid" type="text" class="input-mini" default="" label="Itemid" description="Joomla! Itemid to be associated with the link" />
+        <field name="introtext" type="textarea" filter="raw" rows="10" cols="70" default="" label="Text before the graphic (allows HTML)" description="Text to show before the module" />
+        <field name="introtext2" type="textarea" filter="raw" rows="10" cols="70" default="" label="Text after the graphic (allows HTML)" description="Text to show after the module" />
+        <field name="@spacer" type="spacer" default="" label="" description="" />
+        
+        
+        <field name="debug" type="radio" default="0" label="Debug" description="Debug" class="btn-group">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+		</fieldset>
+		
+		<fieldset
+						name="old"      
+						label="Old Google Charts layout"
+						description="Old Google Charts layout"
+						>
+
+            <field name="fillcolor" type="text" size="6" default="4c86ac" label="Fill color" description="Line color" />
+						
+        <field name="filltransparency" type="list" default="" label="Fill color transparency" description="Fill color transparency">
+          <option value="">0%</option>
+          <option value="DD">15%</option>
+          <option value="BB">25%</option>
+          <option value="00">100%</option>
+        </field>
+        <field name="@spacer" type="spacer" default="" label="" description="" />
+        <field name="linetype" type="list" default="s" label="Line type" description="Line type">
+          <option value="s">Solid</option>
+          <option value="d">Dashed</option>
+        </field>
+        
+        <field name="dashlength" type="text" default="4" size="3" label="Dash length" description="Dash length ONLY for LINE CHART" />
+        <field name="spacelength" type="text" default="2" size="3" label="Space length" description="Space length ONLY for LINE CHART" />
+        <field name="@spacer" type="spacer" default="" label="" description="" />
+        <field name="gridtype" type="list" default="d" label="Grid type" description="Grid type">
+          <option value="n">None</option>
+          <option value="s">Solid</option>
+          <option value="d">Dashed</option>
+        </field>
+        <field name="griddashlength" type="text" default="1" size="3" label="Grid Dash length" description="Grid Dash length ONLY for LINE CHART" />
+        <field name="gridspacelength" type="text" default="1" size="3" label="Grid Space length" description="Grid Space length ONLY for LINE CHART" />
+        <field name="@spacer" type="spacer" default="" label="" description="" />
+        <field name="show_values" type="radio" default="0" label="Show values over each bar/point" description="Show values over each bar/point" class="btn-group">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+        <field name="decimal" type="text" class="input-mini" size="3" default="0" label="Decimal precision" description="Decimal precision" />
+        <field name="symbol_before"  class="input-mini" type="text" size="3" default="" label="Symbol before number" description="Symbol before number" />
+        <field name="symbol_after" class="input-mini" type="text" size="3" default="" label="Symbol after number" description="Symbol after number" />
+        <field name="numbercolor" class="input-mini" type="text" size="6" default="000000" label="Number color" description="Number color" />
+        <field name="numbersize" class="input-mini" type="text" size="6" default="11" label="Number size" description="Number size" />
+        <field name="@spacer" type="spacer" default="" label="" description="" />
+        <field name="markers" type="list" default="" label="Point markers" description="Point markers">
+          <option value="">None</option>
+          <option value="a">Arrow</option>
+          <option value="c">Cross</option>
+          <option value="d">Diamond</option>
+          <option value="o">Circle</option>
+          <option value="s">Square</option>
+          <option value="x">an X</option>
+        </field>
+        <field name="markercolor" type="text" size="6" default="000000" label="Marker color" description="Marker color" />
+        <field name="markersize" type="text" size="3" default="4" label="Marker size" description="Marker size" />
+        <field name="markerpoints" type="text" size="3" default="1" label="Marker on every n-th data point" description="Marker on every n-th data point. Float values allowed. 0.5 will draw a 2 markers for each data point." />
+        <field name="@spacer" type="spacer" default="" label="" description="" />
+        <field name="filllines" type="list" default="0" label="Show vertical fill lines" description="Show vertical fill lines" class="btn-group">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+        <field name="filllinescolor" type="text" size="6" default="000000" label="Vertical fill lines color" description="Vertical fill lines color" />
+        <field name="filllinespoints" type="text" size="3" default="1" label="Line on every n-th data point" description="Line on every n-th data point. Float values allowed. 0.5 will draw a 2 lines for each data point." />
+        <field name="filllineswidth" type="text" default="2" size="3" label="Vertical fill Line width" description="Vertical fill Line width ONLY for LINE CHART" />
+        </fieldset>
+		<fieldset
+						name="advanced"      
+						label="Advanced"
+						description="Advanced"
+						>
+        <field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="PARAMMODULECLASSSUFFIX" />
+      </fieldset>
+    </fields>
+  </config>
+  
+</extension>

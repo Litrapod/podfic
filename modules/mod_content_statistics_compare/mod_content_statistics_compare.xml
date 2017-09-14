@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="1.6" method="upgrade">
+  <name>Content Statistics (COMPARE EVOLUTION IN TIME)</name>
+  <author>JoomlaThat!</author>
+  <creationDate>April 2014</creationDate>
+  <copyright>Copyright (C) 2011 - 2014 JoomlaThat. All rights reserved.</copyright>
+  <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+  <authorEmail>support@joomlathat.com</authorEmail>
+  <authorUrl>www.joomlathat.com</authorUrl>
+  <version>1.6.1</version>
+  <description>This module displays statistics (evolution in time comparison) of any content which has a plugin installed compatible with Content Statistics</description>
+  <files>
+    <filename module="mod_content_statistics_compare">mod_content_statistics_compare.php</filename>
+    <filename>index.html</filename>
+    <filename>helper.php</filename>
+    <filename>tmpl/index.html</filename>
+    <filename>tmpl/default.php</filename>
+    <filename>tmpl/new.php</filename>
+    <filename>tmpl/statistics.css</filename>
+    <filename>tmpl/spinner.gif</filename>
+  </files>
+  <config>
+    <fields name="params" addfieldpath="/plugins/system/contentstats/contentstats">
+      <fieldset
+						name="basic"      
+						label="General"
+						description="General settings"
+						>
+        <field name="component" type="sql" default="0" label="Content provider" query="SELECT '' AS value, '- Select a content provider (component) -' AS text FROM #__extensions UNION SELECT pl.element AS value, CONCAT(co.name, ' (', pl.element, ')') AS text FROM #__extensions AS pl LEFT JOIN #__extensions AS co ON co.element = pl.element AND co.type = 'component' WHERE pl.folder = 'contentstats' AND pl.type = 'plugin' " key_field="value" value_field="text" class="not_chosen" />
+        <field name="criteria" type="list" default="0" label="Content criteria" description="The criteria to follow to select the data" class="not_chosen">
+          <option value="0">Please select a content provider first</option>
+        </field>
+        <field name="selector" type="list" default="all" label="Selector" description="Specify which results to consider" class="not_chosen" >
+          <option value="0">Please select a content provider first</option>
+        </field>
+        <field name="specific_id" type="text" class="input-mini" default="" size="5" label="Specific ID filter" description="Mandatory to fill if you choosed SPECIFIC option on the list above. Leave empty if you are using option ALL or CURRENT"  />
+        <field name="filter_user" type="radio" class="btn-group" default="0" label="Filter by viewing user" description="Show statistics only for the user logged-in">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+        <field name="filter_specific_user" type="text" class="input-mini" default="" label="Filter by specific user (write user ID)" description="Show statistics only for the user specified" />
+        <field name="extra_filters" type="text" label="Extra filters" description="Extra filters. Leave EMPTY unless you know what you're doing" />
+		<field name="unique" type="list" default="0" label="Unique visitors" description="To count only unique visitors">
+          <option value="0">No</option>
+          <option value="1">Yes, by IP</option>
+		  <option value="2">Yes, by user ID (only registered users)</option>
+        </field>
+        <field name="dataname" type="text" size="20" default="Data" label="Data name" description="Data name" />
+        <field name="linecolor" type="color" class="input-mini" size="13" default="" label="Line color" description="Line color" />
+        <field name="linewidth" type="text" class="input-mini" default="2" size="3" label="Line width" description="Line width ONLY for LINE CHART" />
+        <field name="@spacer" type="spacer" default="" label="" description="" />
+        <field name="component2" type="sql" default="0" label="Content provider 2" query="SELECT '' AS value, '- Select a content provider (component) -' AS text FROM #__extensions UNION SELECT pl.element AS value, CONCAT(co.name, ' (', pl.element, ')') AS text FROM #__extensions AS pl LEFT JOIN #__extensions AS co ON co.element = pl.element AND co.type = 'component' WHERE pl.folder = 'contentstats' AND pl.type = 'plugin' " key_field="value" value_field="text" class="not_chosen" />
+        <field name="criteria2" type="list" default="0" label="Content criteria 2" description="The criteria to follow to select the data" class="not_chosen" >
+          <option value="0">Please select a content provider first</option>
+        </field>
+        <field name="selector2" type="list" default="all" label="Selector 2" description="Specify which results to consider" class="not_chosen" >
+          <option value="0">Please select a content provider first</option>
+        </field>
+        <field name="specific_id2" type="text" class="input-mini" default="" size="5" label="Specific ID filter 2" description="Mandatory to fill if you choosed SPECIFIC option on the list above. Leave empty if you are using option ALL or CURRENT" />
+        <field name="filter_user2" type="radio" class="btn-group" default="0" label="Filter by viewing user 2" description="Show statistics only for the user logged-in">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+        <field name="filter_specific_user2" class="input-mini" type="text" default="" label="Filter by specific user (write user ID) 2" description="Show statistics only for the user specified" />
+        <field name="extra_filters2" type="text" label="Extra filters 2" description="Extra filters. Leave EMPTY unless you know what you're doing" />
+		<field name="unique2" type="list" default="0" label="Unique visitors 2" description="To count only unique visitors">
+          <option value="0">No</option>
+          <option value="1">Yes, by IP</option>
+		  <option value="2">Yes, by user ID (only registered users)</option>
+        </field>
+        <field name="dataname2" type="text" size="20" default="Data2" label="Data name 2" description="Data name" />
+        <field name="linecolor2" type="color" class="input-mini" size="13" default="" label="Line color 2" description="Line color" />
+        <field name="linewidth2" type="text" class="input-mini" default="2" size="3" label="Line width 2" description="Line width ONLY for LINE CHART" />
+        <field name="@spacer" type="spacer" default="" label="" description="" />
+        <field name="component3" type="sql" default="0" label="Content provider 3" query="SELECT '' AS value, '- Select a content provider (component) -' AS text FROM #__extensions UNION SELECT pl.element AS value, CONCAT(co.name, ' (', pl.element, ')') AS text FROM #__extensions AS pl LEFT JOIN #__extensions AS co ON co.element = pl.element AND co.type = 'component' WHERE pl.folder = 'contentstats' AND pl.type = 'plugin' " key_field="value" value_field="text" class="not_chosen" />
+        <field name="criteria3" type="list" default="0" label="Content criteria 3" description="The criteria to follow to select the data" class="not_chosen" >
+          <option value="0">Please select a content provider first</option>
+        </field>
+        <field name="selector3" type="list" default="all" label="Selector 3" description="Specify which results to consider" class="not_chosen" >
+          <option value="0">Please select a content provider first</option>
+        </field>
+        <field name="specific_id3" type="text" class="input-mini" default="" size="5" label="Specific ID filter 3" description="Mandatory to fill if you choosed SPECIFIC option on the list above. Leave empty if you are using option ALL or CURRENT" />
+        <field name="filter_user3" type="radio" class="btn-group" default="0" label="Filter by viewing user 3" description="Show statistics only for the user logged-in">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+        <field name="filter_specific_user3" class="input-mini" type="text" default="" label="Filter by specific user (write user ID) 3" description="Show statistics only for the user specified" />
+        <field name="extra_filters3" type="text" label="Extra filters 3" description="Extra filters. Leave EMPTY unless you know what you're doing" />
+		<field name="unique3" type="list" default="0" label="Unique visitors 3" description="To count only unique visitors">
+          <option value="0">No</option>
+          <option value="1">Yes, by IP</option>
+		  <option value="2">Yes, by user ID (only registered users)</option>
+        </field>
+        <field name="dataname3" type="text" size="20" default="Data3" label="Data name 3" description="Data name" />
+        <field name="linecolor3" type="color" class="input-mini" size="13" default="" label="Line color 3" description="Line color" />
+        <field name="linewidth3" type="text" class="input-mini" default="2" size="3" label="Line width 3" description="Line width ONLY for LINE CHART" />
+        <field name="@spacer" type="spacer" default="" label="" description="" />
+        <field name="component4" type="sql" default="0" label="Content provider 4" query="SELECT '' AS value, '- Select a content provider (component) -' AS text FROM #__extensions UNION SELECT pl.element AS value, CONCAT(co.name, ' (', pl.element, ')') AS text FROM #__extensions AS pl LEFT JOIN #__extensions AS co ON co.element = pl.element AND co.type = 'component' WHERE pl.folder = 'contentstats' AND pl.type = 'plugin' " key_field="value" value_field="text" class="not_chosen" />
+        <field name="criteria4" type="list" default="0" label="Content criteria 4" description="The criteria to follow to select the data" class="not_chosen" >
+          <option value="0">Please select a content provider first</option>
+        </field>
+        <field name="selector4" type="list" default="all" label="Selector 4" description="Specify which results to consider" class="not_chosen" >
+          <option value="0">Please select a content provider first</option>
+        </field>
+        <field name="specific_id4" type="text" class="input-mini" default="" size="5" label="Specific ID filter 4" description="Mandatory to fill if you choosed SPECIFIC option on the list above. Leave empty if you are using option ALL or CURRENT" />
+        <field name="filter_user4" type="radio" class="btn-group" default="0" label="Filter by viewing user 4" description="Show statistics only for the user logged-in">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+        <field name="filter_specific_user4" type="text" class="input-mini" default="" label="Filter by specific user (write user ID) 4" description="Show statistics only for the user specified" />
+        <field name="extra_filters4" type="text" label="Extra filters 4" description="Extra filters. Leave EMPTY unless you know what you're doing" />
+		<field name="unique4" type="list" default="0" label="Unique visitors 4" description="To count only unique visitors">
+          <option value="0">No</option>
+          <option value="1">Yes, by IP</option>
+		  <option value="2">Yes, by user ID (only registered users)</option>
+        </field>
+        <field name="dataname4" type="text" size="20" default="Data4" label="Data name 4" description="Data name" />
+        <field name="linecolor4" type="color" class="input-mini" size="13" default="" label="Line color 4" description="Line color" />
+        <field name="linewidth4" type="text" class="input-mini" default="2" size="3" label="Line width 4" description="Line width ONLY for LINE CHART" />
+        <field name="@spacer" type="spacer" default="" label="" description="" />
+        <field name="time" type="radio" default="DAYS" class="btn-group" label="Period of time" description="Period of time to show in the graphic">
+          <option value="DAYS">Last X days</option>
+          <option value="MONTHS">Last X months</option>
+          <option value="YEARS">Last X years</option>
+        </field>
+        <field name="num_units_time" type="text" class="input-mini" default="7" size="3" label="Num days or months" description="The number of DAYS or MONTHS to show in retrospective" />
+        <field name="num_labels" type="text" class="input-mini" default="1" size="3" label="Show X axis labels each X data point" description="For instance, if you show 14 days and you put this fieldeter to 2, you'll see 7 labels" />
+        <field name="label_format" type="list" default="%a" label="Label date format" description="This is the strftime format for the date labels" >
+          <option value="D">Sun</option>
+          <option value="l">Sunday</option>
+          <option value="j">17</option>
+          <option value="D j">Sun 17</option>
+          <option value="l j">Sunday 17</option>
+          <option value="D j M">Sun 17 Jan</option>
+          <option value="D, M j">Sun, Jan 17</option>
+          <option value="M j">Jan 17</option>
+          <option value="M">Jan</option>
+          <option value="F">January</option>
+          <option value="M Y">Jan 2014</option>
+          <option value="F Y">January 2014</option>
+          <option value="Y">2014</option>
+        </field>
+        <field name="other_label_format" type="text" default="" label="Label date format (custom)" description="Leave empty to use one of the options above" />
+        <field name="layout" type="hidden" default="new" label="Layout" description="Layout">
+          <!--option value="default">Google Charts</option-->
+          <option value="new">New Google charts (SVG, HTML5)</option>
+        </field>
+        <field name="responsive" type="radio" default="0" label="Responsive layout" description="Responsive layout" class="btn-group">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+        <field name="width" type="text" class="input-mini" default="215" size="4" label="Chart width" description="The IMG element width" />
+        <field name="height" type="text" class="input-mini" default="170" size="4" label="Chart height" description="The IMG element height" />
+        <field name="chart" type="list" default="lc" label="Chart type" description="The chart type">
+          <option value="lc">Line Chart</option>
+          <option value="smooth">Line Chart (smooth)</option>
+          <option value="area">Area Chart</option>
+          <option value="bvg">Column Chart</option>
+          <option value="stepped">Stepped Area Chart</option>
+          <option value="steppedunconnected">Stepped Area Chart (unconnected steps)</option>
+        </field>
+        <field name="stacked" type="radio" class="btn-group" default="0" label="Stacked" description="Stacked">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+        <field name="space_left" type="text" class="input-mini" default="30" size="4" label="Space on the left of the chart" description="Space on the left of the chart" />
+        <field name="space_top" type="text" class="input-mini" default="10" size="4" label="Space on the top of the chart" description="Space on the top of the chart" />
+        <field name="space_right" type="text" class="input-mini" default="50" size="4" label="Space on the right of the chart" description="Space on the right of the chart" />
+        <field name="space_bottom" type="text" class="input-mini" default="40" size="4" label="Space on the bottom of the chart" description="Space on the bottom of the chart" />
+        <field name="legendposition" type="list" default="none" label="Legend position" description="Legend position">
+          <option value="left">To the left of the chart</option>
+          <option value="right">To the right of the chart</option>
+          <option value="top">Above the chart</option>
+          <option value="bottom">Below the chart</option>
+          <option value="none">No legend is displayed</option>
+        </field>
+        <field name="@spacer" type="spacer" default="" label="" description="" />
+        <field name="backgroundcolor" type="color" class="input-mini" size="6" default="" label="Background color" description="Background color" />
+        <field name="labelcolor" type="color" class="input-mini" size="6" default="#999999" label="Label color" description="Label color" />
+        <field name="symbol_before" type="text" class="input-mini" size="3" default="" label="Symbol before number" description="Symbol before number" />
+        <field name="symbol_after" type="text" class="input-mini" size="3" default="" label="Symbol after number" description="Symbol after number" />
+        <field name="@spacer" type="spacer" default="" label="" description="" />
+        <field name="markers" type="list" default="" label="Point markers" description="Point markers">
+          <option value="">None</option>
+          <option value="o">Circle</option>
+        </field>
+        <field name="markersize" type="text" class="input-mini" size="3" default="4" label="Marker size" description="Marker size" />
+        <field name="@spacer" type="spacer" default="" label="" description="" />
+        <field name="Itemid" type="text" class="input-mini" default="" label="Itemid" description="Joomla! Itemid to be associated with the link" />
+        <field name="@spacer" type="spacer" default="" label="" description="" />
+       
+        
+        <field name="introtext" type="textarea" filter="raw" rows="10" cols="70" default="" label="Text before the graphic (allows HTML)" description="Text to show before the module" />
+        <field name="introtext2" type="textarea" filter="raw" rows="10" cols="70" default="" label="Text after the graphic (allows HTML)" description="Text to show after the module" />
+        <field name="debug" type="radio" class="btn-group" default="0" label="Debug" description="Debug">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+        <field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="PARAMMODULECLASSSUFFIX" />
+      </fieldset>
+    </fields>
+  </config>
+ 
+</extension>

@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="1.6" method="upgrade">
+  <name>Content Statistics (MAP)</name>
+  <author>JoomlaThat!</author>
+  <creationDate>March 2014</creationDate>
+  <copyright>Copyright (C) 2011 - 2014 JoomlaThat. All rights reserved.</copyright>
+  <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+  <authorEmail>support@joomlathat.com</authorEmail>
+  <authorUrl>www.joomlathat.com</authorUrl>
+  <version>1.6.3</version>
+  <description>This module displays maps of any content which has a plugin installed compatible with Content Statistics</description>
+  <files>
+    <filename module="mod_content_statistics_map">mod_content_statistics_map.php</filename>
+    <filename>index.html</filename>
+    <filename>helper.php</filename>
+    <filename>tmpl/index.html</filename>
+    <filename>tmpl/map.php</filename>
+    <filename>tmpl/spinner.gif</filename>
+  </files>
+  <config>
+    <fields name="params" addfieldpath="/plugins/system/contentstats/contentstats">
+      <fieldset
+						name="basic"      
+						label="General"
+						description="General settings"
+						>
+        <field name="component" type="sql" default="0" label="Content provider" query="SELECT '' AS value, '- Select a content provider (component) -' AS text FROM #__extensions UNION SELECT pl.element AS value, CONCAT(co.name, ' (', pl.element, ')') AS text FROM #__extensions AS pl LEFT JOIN #__extensions AS co ON co.element = pl.element AND co.type = 'component' WHERE pl.folder = 'contentstats' AND pl.type = 'plugin' " key_field="value" value_field="text" class="not_chosen" />
+        <!--field name="component" type="contenttypeselect" default="0" label="Content provider" /-->
+        
+        <field name="criteria" type="list" default="0" label="Content criteria" description="The criteria to follow to select the data" class="not_chosen" >
+          <option value="0">Please select a content provider first</option>
+        </field>
+        <field name="selector" type="list" default="all" label="Selector" description="Specify which results to consider" class="not_chosen" >
+          <option value="0">Please select a content provider first</option>
+        </field>
+        <field name="specific_id" type="text" class="input-mini" default="" size="5" label="Specific ID filter" description="Mandatory to fill if you choosed SPECIFIC option on the list above. Leave empty if you are using option ALL or CURRENT" />
+        <field name="filter_user" type="radio" class="btn-group" default="0" label="Filter by viewing user" description="Show statistics only for the user logged-in">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+        <field name="extra_filters" type="text" label="Extra filters" description="Extra filters. Leave EMPTY unless you know what you're doing" />
+        <field name="@spacer" type="spacer" default="" label="" description="" />
+        <field name="unique" type="list" default="0" label="Unique visitors" description="To count only unique visitors">
+          <option value="0">No</option>
+          <option value="1">Yes, by IP</option>
+          <option value="2">Yes, by user ID (only registered users)</option>
+        </field>
+        <field name="@spacer" type="spacer" default="" label="" description="" />
+        <field name="time" type="radio" class="btn-group" default="DAYS" label="Period of time" description="Period of time to show in the graphic">
+          <option value="DAYS">Last X days</option>
+          <option value="MONTHS">Last X months</option>
+          <option value="YEARS">Last X years</option>
+        </field>
+        <field name="num_units_time" type="text" class="input-mini" default="7" size="3" label="Num days or months" description="The number of DAYS or MONTHS to show in retrospective" />
+        <field name="datagroup" type="list" default="countries" label="What to paint (regions to count)" description="What to count">
+          <option value="countries">Countries</option>
+          <option value="states">States</option>
+          <option value="cities">Cities</option>
+        </field>
+        <field name="country" type="list" default="" label="Country filter" description="Country filter" >
+          <option value="">- No filter -</option>
+          <option value='AD'>ANDORRA</option>
+          <option value='AE'>UNITED ARAB EMIRATES</option>
+          <option value='AF'>AFGHANISTAN</option>
+          <option value='AG'>ANTIGUA AND BARBUDA</option>
+          <option value='AI'>ANGUILLA</option>
+          <option value='AL'>ALBANIA</option>
+          <option value='AM'>ARMENIA</option>
+          <option value='AO'>ANGOLA</option>
+          <option value='AQ'>ANTARCTICA</option>
+          <option value='AR'>ARGENTINA</option>
+          <option value='AS'>AMERICAN SAMOA</option>
+          <option value='AT'>AUSTRIA</option>
+          <option value='AU'>AUSTRALIA</option>
+          <option value='AW'>ARUBA</option>
+          <option value='AX'>ÅLAND ISLANDS</option>
+          <option value='AZ'>AZERBAIJAN</option>
+          <option value='BA'>BOSNIA AND HERZEGOVINA</option>
+          <option value='BB'>BARBADOS</option>
+          <option value='BD'>BANGLADESH</option>
+          <option value='BE'>BELGIUM</option>
+          <option value='BF'>BURKINA FASO</option>
+          <option value='BG'>BULGARIA</option>
+          <option value='BH'>BAHRAIN</option>
+          <option value='BI'>BURUNDI</option>
+          <option value='BJ'>BENIN</option>
+          <option value='BL'>SAINT BARTHÉLEMY</option>
+          <option value='BM'>BERMUDA</option>
+          <option value='BN'>BRUNEI DARUSSALAM</option>
+          <option value='BO'>BOLIVIA, PLURINATIONAL STATE OF</option>
+          <option value='BQ'>BONAIRE, SINT EUSTATIUS AND SABA</option>
+          <option value='BR'>BRAZIL</option>
+          <option value='BS'>BAHAMAS</option>
+          <option value='BT'>BHUTAN</option>
+          <option value='BV'>BOUVET ISLAND</option>
+          <option value='BW'>BOTSWANA</option>
+          <option value='BY'>BELARUS</option>
+          <option value='BZ'>BELIZE</option>
+          <option value='CA'>CANADA</option>
+          <option value='CC'>COCOS (KEELING) ISLANDS</option>
+          <option value='CD'>CONGO, THE DEMOCRATIC REPUBLIC OF THE</option>
+          <option value='CF'>CENTRAL AFRICAN REPUBLIC</option>
+          <option value='CG'>CONGO</option>
+          <option value='CH'>SWITZERLAND</option>
+          <option value='CI'>CÔTE D'IVOIRE</option>
+          <option value='CK'>COOK ISLANDS</option>
+          <option value='CL'>CHILE</option>
+          <option value='CM'>CAMEROON</option>
+          <option value='CN'>CHINA</option>
+          <option value='CO'>COLOMBIA</option>
+          <option value='CR'>COSTA RICA</option>
+          <option value='CU'>CUBA</option>
+          <option value='CV'>CAPE VERDE</option>
+          <option value='CW'>CURAÇAO</option>
+          <option value='CX'>CHRISTMAS ISLAND</option>
+          <option value='CY'>CYPRUS</option>
+          <option value='CZ'>CZECH REPUBLIC</option>
+          <option value='DE'>GERMANY</option>
+          <option value='DJ'>DJIBOUTI</option>
+          <option value='DK'>DENMARK</option>
+          <option value='DM'>DOMINICA</option>
+          <option value='DO'>DOMINICAN REPUBLIC</option>
+          <option value='DZ'>ALGERIA</option>
+          <option value='EC'>ECUADOR</option>
+          <option value='EE'>ESTONIA</option>
+          <option value='EG'>EGYPT</option>
+          <option value='EH'>WESTERN SAHARA</option>
+          <option value='ER'>ERITREA</option>
+          <option value='ES'>SPAIN</option>
+          <option value='ET'>ETHIOPIA</option>
+          <option value='FI'>FINLAND</option>
+          <option value='FJ'>FIJI</option>
+          <option value='FK'>FALKLAND ISLANDS (MALVINAS)</option>
+          <option value='FM'>MICRONESIA, FEDERATED STATES OF</option>
+          <option value='FO'>FAROE ISLANDS</option>
+          <option value='FR'>FRANCE</option>
+          <option value='GA'>GABON</option>
+          <option value='GB'>UNITED KINGDOM</option>
+          <option value='GD'>GRENADA</option>
+          <option value='GE'>GEORGIA</option>
+          <option value='GF'>FRENCH GUIANA</option>
+          <option value='GG'>GUERNSEY</option>
+          <option value='GH'>GHANA</option>
+          <option value='GI'>GIBRALTAR</option>
+          <option value='GL'>GREENLAND</option>
+          <option value='GM'>GAMBIA</option>
+          <option value='GN'>GUINEA</option>
+          <option value='GP'>GUADELOUPE</option>
+          <option value='GQ'>EQUATORIAL GUINEA</option>
+          <option value='GR'>GREECE</option>
+          <option value='GS'>SOUTH GEORGIA AND THE SOUTH SANDWICH ISLANDS</option>
+          <option value='GT'>GUATEMALA</option>
+          <option value='GU'>GUAM</option>
+          <option value='GW'>GUINEA-BISSAU</option>
+          <option value='GY'>GUYANA</option>
+          <option value='HK'>HONG KONG</option>
+          <option value='HM'>HEARD ISLAND AND MCDONALD ISLANDS</option>
+          <option value='HN'>HONDURAS</option>
+          <option value='HR'>CROATIA</option>
+          <option value='HT'>HAITI</option>
+          <option value='HU'>HUNGARY</option>
+          <option value='ID'>INDONESIA</option>
+          <option value='IE'>IRELAND</option>
+          <option value='IL'>ISRAEL</option>
+          <option value='IM'>ISLE OF MAN</option>
+          <option value='IN'>INDIA</option>
+          <option value='IO'>BRITISH INDIAN OCEAN TERRITORY</option>
+          <option value='IQ'>IRAQ</option>
+          <option value='IR'>IRAN, ISLAMIC REPUBLIC OF</option>
+          <option value='IS'>ICELAND</option>
+          <option value='IT'>ITALY</option>
+          <option value='JE'>JERSEY</option>
+          <option value='JM'>JAMAICA</option>
+          <option value='JO'>JORDAN</option>
+          <option value='JP'>JAPAN</option>
+          <option value='KE'>KENYA</option>
+          <option value='KG'>KYRGYZSTAN</option>
+          <option value='KH'>CAMBODIA</option>
+          <option value='KI'>KIRIBATI</option>
+          <option value='KM'>COMOROS</option>
+          <option value='KN'>SAINT KITTS AND NEVIS</option>
+          <option value='KP'>KOREA, DEMOCRATIC PEOPLE'S REPUBLIC OF</option>
+          <option value='KR'>KOREA, REPUBLIC OF</option>
+          <option value='KW'>KUWAIT</option>
+          <option value='KY'>CAYMAN ISLANDS</option>
+          <option value='KZ'>KAZAKHSTAN</option>
+          <option value='LA'>LAO PEOPLE'S DEMOCRATIC REPUBLIC</option>
+          <option value='LB'>LEBANON</option>
+          <option value='LC'>SAINT LUCIA</option>
+          <option value='LI'>LIECHTENSTEIN</option>
+          <option value='LK'>SRI LANKA</option>
+          <option value='LR'>LIBERIA</option>
+          <option value='LS'>LESOTHO</option>
+          <option value='LT'>LITHUANIA</option>
+          <option value='LU'>LUXEMBOURG</option>
+          <option value='LV'>LATVIA</option>
+          <option value='LY'>LIBYA</option>
+          <option value='MA'>MOROCCO</option>
+          <option value='MC'>MONACO</option>
+          <option value='MD'>MOLDOVA, REPUBLIC OF</option>
+          <option value='ME'>MONTENEGRO</option>
+          <option value='MF'>SAINT MARTIN (FRENCH PART)</option>
+          <option value='MG'>MADAGASCAR</option>
+          <option value='MH'>MARSHALL ISLANDS</option>
+          <option value='MK'>MACEDONIA, THE FORMER YUGOSLAV REPUBLIC OF</option>
+          <option value='ML'>MALI</option>
+          <option value='MM'>MYANMAR</option>
+          <option value='MN'>MONGOLIA</option>
+          <option value='MO'>MACAO</option>
+          <option value='MP'>NORTHERN MARIANA ISLANDS</option>
+          <option value='MQ'>MARTINIQUE</option>
+          <option value='MR'>MAURITANIA</option>
+          <option value='MS'>MONTSERRAT</option>
+          <option value='MT'>MALTA</option>
+          <option value='MU'>MAURITIUS</option>
+          <option value='MV'>MALDIVES</option>
+          <option value='MW'>MALAWI</option>
+          <option value='MX'>MEXICO</option>
+          <option value='MY'>MALAYSIA</option>
+          <option value='MZ'>MOZAMBIQUE</option>
+          <option value='NA'>NAMIBIA</option>
+          <option value='NC'>NEW CALEDONIA</option>
+          <option value='NE'>NIGER</option>
+          <option value='NF'>NORFOLK ISLAND</option>
+          <option value='NG'>NIGERIA</option>
+          <option value='NI'>NICARAGUA</option>
+          <option value='NL'>NETHERLANDS</option>
+          <option value='NO'>NORWAY</option>
+          <option value='NP'>NEPAL</option>
+          <option value='NR'>NAURU</option>
+          <option value='NU'>NIUE</option>
+          <option value='NZ'>NEW ZEALAND</option>
+          <option value='OM'>OMAN</option>
+          <option value='PA'>PANAMA</option>
+          <option value='PE'>PERU</option>
+          <option value='PF'>FRENCH POLYNESIA</option>
+          <option value='PG'>PAPUA NEW GUINEA</option>
+          <option value='PH'>PHILIPPINES</option>
+          <option value='PK'>PAKISTAN</option>
+          <option value='PL'>POLAND</option>
+          <option value='PM'>SAINT PIERRE AND MIQUELON</option>
+          <option value='PN'>PITCAIRN</option>
+          <option value='PR'>PUERTO RICO</option>
+          <option value='PS'>PALESTINIAN, STATE OF</option>
+          <option value='PT'>PORTUGAL</option>
+          <option value='PW'>PALAU</option>
+          <option value='PY'>PARAGUAY</option>
+          <option value='QA'>QATAR</option>
+          <option value='RE'>RÉUNION</option>
+          <option value='RO'>ROMANIA</option>
+          <option value='RS'>SERBIA</option>
+          <option value='RU'>RUSSIAN FEDERATION</option>
+          <option value='RW'>RWANDA</option>
+          <option value='SA'>SAUDI ARABIA</option>
+          <option value='SB'>SOLOMON ISLANDS</option>
+          <option value='SC'>SEYCHELLES</option>
+          <option value='SD'>SUDAN</option>
+          <option value='SE'>SWEDEN</option>
+          <option value='SG'>SINGAPORE</option>
+          <option value='SH'>SAINT HELENA, ASCENSION AND TRISTAN DA CUNHA</option>
+          <option value='SI'>SLOVENIA</option>
+          <option value='SJ'>SVALBARD AND JAN MAYEN</option>
+          <option value='SK'>SLOVAKIA</option>
+          <option value='SL'>SIERRA LEONE</option>
+          <option value='SM'>SAN MARINO</option>
+          <option value='SN'>SENEGAL</option>
+          <option value='SO'>SOMALIA</option>
+          <option value='SR'>SURINAME</option>
+          <option value='SS'>SOUTH SUDAN</option>
+          <option value='ST'>SAO TOME AND PRINCIPE</option>
+          <option value='SV'>EL SALVADOR</option>
+          <option value='SX'>SINT MAARTEN (DUTCH PART)</option>
+          <option value='SY'>SYRIAN ARAB REPUBLIC</option>
+          <option value='SZ'>SWAZILAND</option>
+          <option value='TC'>TURKS AND CAICOS ISLANDS</option>
+          <option value='TD'>CHAD</option>
+          <option value='TF'>FRENCH SOUTHERN TERRITORIES</option>
+          <option value='TG'>TOGO</option>
+          <option value='TH'>THAILAND</option>
+          <option value='TJ'>TAJIKISTAN</option>
+          <option value='TK'>TOKELAU</option>
+          <option value='TL'>TIMOR-LESTE</option>
+          <option value='TM'>TURKMENISTAN</option>
+          <option value='TN'>TUNISIA</option>
+          <option value='TO'>TONGA</option>
+          <option value='TR'>TURKEY</option>
+          <option value='TT'>TRINIDAD AND TOBAGO</option>
+          <option value='TV'>TUVALU</option>
+          <option value='TW'>TAIWAN, PROVINCE OF CHINA</option>
+          <option value='TZ'>TANZANIA, UNITED REPUBLIC OF</option>
+          <option value='UA'>UKRAINE</option>
+          <option value='UG'>UGANDA</option>
+          <option value='UM'>UNITED STATES MINOR OUTLYING ISLANDS</option>
+          <option value='US'>UNITED STATES</option>
+          <option value='UY'>URUGUAY</option>
+          <option value='UZ'>UZBEKISTAN</option>
+          <option value='VA'>HOLY SEE (VATICAN CITY STATE)</option>
+          <option value='VC'>SAINT VINCENT AND THE GRENADINES</option>
+          <option value='VE'>VENEZUELA, BOLIVARIAN REPUBLIC</option>
+          <option value='VG'>VIRGIN ISLANDS, BRITISH</option>
+          <option value='VI'>VIRGIN ISLANDS, U.S.</option>
+          <option value='VN'>VIET NAM</option>
+          <option value='VU'>VANUATU</option>
+          <option value='WF'>WALLIS AND FUTUNA</option>
+          <option value='WS'>SAMOA</option>
+          <option value='YE'>YEMEN</option>
+          <option value='YT'>MAYOTTE</option>
+          <option value='ZA'>SOUTH AFRICA</option>
+          <option value='ZM'>ZAMBIA</option>
+          <option value='ZW'>ZIMBABWE</option>
+        </field>
+        <field name="@spacer" type="spacer" default="" label="" description="" />
+        <field name="resolution" type="list" default="countries" label="Resolution" description="Resolution">
+          <option value="countries">Countries (Supported for all regions)</option>
+          <option value="provinces">Provinces (Supported only for country regions and US state regions)</option>
+          <option value="metros">Metro area (Supported for the US country region and US state regions only)</option>
+        </field>
+        <field name="region" type="list" default="world" label="Display region" description="Display region" >
+          <option value="world">World</option>
+          <option value="002">Africa</option>
+          <option value="015">Northern Africa</option>
+          <option value="011">Western Africa</option>
+          <option value="017">Middle Africa</option>
+          <option value="014">Eastern Africa</option>
+          <option value="018">Southern Africa</option>
+          <option value="150">Europe</option>
+          <option value="154">Northern Europe</option>
+          <option value="155">Western Europe</option>
+          <option value="151">Eastern Europe</option>
+          <option value="039">Southern Europe</option>
+          <option value="019">Americas</option>
+          <option value="021">Northern America</option>
+          <option value="029">Caribbean</option>
+          <option value="013">Central America</option>
+          <option value="005">South America</option>
+          <option value="142">Asia</option>
+          <option value="143">Central Asia</option>
+          <option value="030">Eastern Asia</option>
+          <option value="034">Southern Asia</option>
+          <option value="035">South-Eastern Asia</option>
+          <option value="145">Western Asia</option>
+          <option value="009">Oceania</option>
+          <option value="053">Australia and New Zealand</option>
+          <option value="054">Melanesia</option>
+          <option value="057">Micronesia</option>
+          <option value="061">Polynesia</option>
+        </field>
+        <field name="dataname" type="text" class="input-small" size="20" default="Data" label="Data name" description="Data name" />
+        <field name="width" type="text" class="input-mini" default="215" size="4" label="Chart width" description="The IMG element width" />
+        <field name="height" type="text" class="input-mini" default="170" size="4" label="Chart height" description="The IMG element height" />
+        <field name="responsive" type="radio" default="0" label="Responsive layout" description="Responsive layout" class="btn-group">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+        <field name="@spacer" type="spacer" default="" label="" description="" />
+        <field name="color1" type="text" class="input-mini" size="6" default="" label="Color 1" description="Color 1" />
+        <field name="color2" type="text" class="input-mini" size="6" default="" label="Color 2" description="Color 1" />
+        <field name="backgroundcolor" type="text" class="input-mini" size="6" default="" label="Background color" description="Background color" />
+        <field name="@spacer" type="spacer" default="" label="" description="" />
+        <field name="introtext" type="textarea"  filter="raw" rows="10" cols="70" default="" label="Introduction text" description="Text to show before the module" />
+        <field name="introtext2" type="textarea"  filter="raw" rows="10" cols="70" default="" label="Introduction text 2" description="Text to show after the module" />
+        <field name="@spacer" type="spacer" default="" label="" description="" />
+        <field name="debug" type="radio" class="btn-group" default="0" label="Debug" description="Debug">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
+        <field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="PARAMMODULECLASSSUFFIX" />
+      </fieldset>
+    </fields>
+  </config>
+</extension>

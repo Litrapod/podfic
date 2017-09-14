@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension type="component" version="3.0" method="upgrade" >
+  <name>Contentstats</name>
+  <license>GPLv2. Private software</license>
+  <author>JoomlaThat!</author>
+  <authorEmail>support@joomlathat.com</authorEmail>
+  <authorUrl>http://www.JoomlaThat.com</authorUrl>
+   <creationDate>July 2015</creationDate>
+  <copyright>2011 - 2015, JoomlaThat.com</copyright>
+  <version>1.8.0</version>
+  <description>Content Statistics for Joomla!</description>
+  <uninstall></uninstall>
+  <administration>
+    
+    <!-- Administration Menu Section -->
+    <menu img="components/com_contentstats/assets/images/columns.png" link="option=com_contentstats">CONTENT_STATISTICS</menu>
+	
+    <files folder="admin">
+      <folder>assets</folder>
+      <folder>controllers</folder>
+      
+      <folder>models</folder>
+      <folder>tables</folder>
+      <folder>views</folder>
+      <filename>config.xml</filename>
+      <filename>controller.php</filename>
+      <filename>index.html</filename>
+      <filename>contentstats.php</filename>
+      <filename>access.xml</filename>
+    </files>
+	
+	<languages folder="admin">
+		<language tag="en-GB">en-GB.com_contentstats.ini</language>
+		<language tag="en-GB">en-GB.com_contentstats.sys.ini</language>
+	  </languages>
+		
+  </administration>
+ 
+</extension>
