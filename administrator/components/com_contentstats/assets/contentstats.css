@@ -1,0 +1,32 @@
+@charset "utf-8";
+
+div.icon-48-items {	background: url(images/columns_big.png) no-repeat left; }
+
+.filtersbox{
+	margin-bottom:10px;
+}
+
+.smallinput{
+	width:30px;
+}
+.mediuminput{
+	width:140px;
+}
+
+.filter-bar .navbar-inner {
+padding: 5px !important;
+}
+.navbar .btn, .navbar .btn-group {
+ margin-top: 0px !important;
+}
+.totalstats{
+	padding: 4px;
+}
+@media (max-width: 768px){
+	.navbar-inner input, .navbar-inner select{
+		margin-bottom: 5px !important;
+	}
+}
+.leftmargin{
+	margin-left: 5px;
+}

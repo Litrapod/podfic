@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="plugin" group="system" method="upgrade">
+  <name>System - Content Statistics</name>
+  <author>JoomlaThat!</author>
+  <creationDate>May 2015</creationDate>
+  <copyright>Copyright (C) 2011 - 2015 JoomlaThat!. All rights reserved.</copyright>
+  <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+  <authorEmail>support@joomlathat.com</authorEmail>
+  <authorUrl>www.joomlathat.com</authorUrl>
+  <version>1.6.4</version>
+  <description>Saves Statistics data</description>
+  <files>
+    <filename plugin="contentstats">contentstats.php</filename>
+    <folder>contentstats</folder>
+  </files>
+  <languages>
+    <language tag="en-GB">en-GB.plg_system_contentstats.ini</language>
+  </languages>
+  <config>
+    <fields name="params">
+      <fieldset
+				name="basic"      
+				label="General"
+				description="Content Statistics global settings"
+				>
+        <field name="blockips" type="textarea" rows="10" cols="70" default="" label="Do not store these IPs" description="Write IPs you don't want to be stored on the statistics system. Separate by commas." />
+        <field name="blockusers" type="textarea" rows="10" cols="70" default="" label="Do not store these User ID visits" description="Write User IDs you don't want to be stored on the statistics system. Separate by commas." />
+        <field name="blockuseragents" type="textarea" rows="10" cols="70" default="googlebot,msnbot,yahoo,facebookexternalhit" label="Do not store these User Agent visits" description="Write User Agents you don't want to be stored on the statistics system. Separate by commas." />
+		
+		<field name="only_registered" type="radio" default="0" label="Track data" description="Track data" >
+		<option value="0">From everybody</option>
+		<option value="1">Only from registered users</option>
+		</field>
+		
+		<field name="hours" type="list" default="0" label="Adjust data recording timezone" description="Adjust data timeframe" >
+		<option value="-12">-12 hours</option>
+		<option value="-11">-11 hours</option>
+		<option value="-10">-10 hours</option>
+		<option value="-9">-9 hours</option>
+		<option value="-8">-8 hours</option>
+		<option value="-7">-7 hours</option>
+		<option value="-6">-6 hours</option>
+		<option value="-5">-5 hours</option>
+		<option value="-4">-4 hours</option>
+		<option value="-3">-3 hours</option>
+		<option value="-2">-2 hours</option>
+		<option value="-1">-1 hour</option>
+		<option value="0">No</option>
+		<option value="1">+1 hour</option>
+		<option value="2">+2 hours</option>
+		<option value="3">+3 hours</option>
+		<option value="4">+4 hours</option>
+		<option value="5">+5 hours</option>
+		<option value="6">+6 hours</option>
+		<option value="7">+7 hours</option>
+		<option value="8">+8 hours</option>
+		<option value="9">+9 hours</option>
+		<option value="10">+10 hours</option>
+		<option value="11">+11 hours</option>
+		<option value="12">+12 hours</option>
+		</field>
+		
+		<field name="ip_geolocation" type="radio" class="btn-group" default="1" label="Use IP Geolocation" description="Use IP Geolocation. This requires the API KEY to be inserted in the next field" >
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="api_key" type="text" default="" size="90" label="API key (ipinfodb.com)" description="The API key for IP geolocation. Get yours here: http://www.ipinfodb.com/register.php" />
+
+		<field name="apimethod" type="list" default="1" label="Method to connect to API server" description="Method to connect to API server" >
+			<option value="1">file_get_contents</option>
+			<option value="0">curl</option>
+		</field>
+		
+      </fieldset>
+    </fields>
+  </config>
+  <scriptfile>install.php</scriptfile>
+  
+</extension>

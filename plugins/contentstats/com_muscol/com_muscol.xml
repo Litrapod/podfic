@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="1.6" type="plugin" group="contentstats">
+  <name>Content Statistics - Music Collection</name>
+  <author>JoomlaThat!</author>
+  <creationDate>January 2014</creationDate>
+	<copyright>Copyright (C) 2011 - 2014 JoomlaThat!. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>support@joomlathat.com</authorEmail>
+	<authorUrl>www.joomlathat.com</authorUrl>
+	<version>1.4.1</version>
+  <description>Adds Content Statistics compatibility for Music Collection</description>
+  <files>
+    <filename plugin="com_muscol">com_muscol.php</filename>
+  </files>
+  <languages>
+    <language tag="en-GB">en-GB.plg_contentstats_com_muscol.ini</language>
+  </languages>
+  <config>
+    <fields name="params">
+      <fieldset
+					name="basic"      
+					label="General"
+					description="General settings"
+					>
+        <field name="registeralbumviews" type="radio" default="1" label="Register Album Views" description="Register Album Views on the Database. You must set to YES if you want to track statistics">
+          <option value="0">NO</option>
+          <option value="1">YES</option>
+        </field>
+        <field name="registerartistviews" type="radio" default="1" label="Register Artist Views" description="Register Artist Views on the Database. You must set to YES if you want to track statistics">
+          <option value="0">NO</option>
+          <option value="1">YES</option>
+        </field>
+        <field name="registersongviews" type="radio" default="1" label="Register Song Views" description="Register Song Views on the Database. You must set to YES if you want to track statistics">
+          <option value="0">NO</option>
+          <option value="1">YES</option>
+        </field>
+        <field name="registersongplays" type="radio" default="1" label="Register Song Plays" description="Register Song Plays on the Database. You must set to YES if you want to track statistics">
+          <option value="0">NO</option>
+          <option value="1">YES</option>
+        </field>
+        <field name="registersongdownloads" type="radio" default="1" label="Register Song Downloads" description="Register Song Downloads on the Database. You must set to YES if you want to track statistics">
+          <option value="0">NO</option>
+          <option value="1">YES</option>
+        </field>
+        <field name="registerplaylistviews" type="radio" default="1" label="Register Playlist Views" description="Register Playlist Views on the Database. You must set to YES if you want to track statistics">
+          <option value="0">NO</option>
+          <option value="1">YES</option>
+        </field>
+        <field name="albumratings" type="radio" default="1" label="Register Album ratings" description="Register Album ratings on the Database. You must set to YES if you want to track statistics">
+          <option value="0">NO</option>
+          <option value="1">YES</option>
+        </field>
+        <field name="songratings" type="radio" default="1" label="Register Song ratings" description="Register Song ratings on the Database. You must set to YES if you want to track statistics">
+          <option value="0">NO</option>
+          <option value="1">YES</option>
+        </field>
+      </fieldset>
+    </fields>
+  </config>
+  <updateservers>
+    <server 
+			type="extension"
+			priority="1"
+			name="Joomla Content Statistics">http://www.joomlacontentstatistics.com/updates/plg_contentstats_com_muscol.xml</server>
+  </updateservers>
+</extension>
